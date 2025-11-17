@@ -1,0 +1,1 @@
+# Sectograph app for ZEPP OS
