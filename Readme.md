@@ -6,6 +6,7 @@
 <img src="./img/date.png" alt="drawing" width="200"/>
 <img src="./img/color.png" alt="drawing" width="200"/>
 
+
 ## English Version
 
 ### Event Manager - Your Daily Schedule on Your Wrist
@@ -119,6 +120,10 @@
 
 **Контакты:** 
 - Email: belkamydog22@gmail.com
+
+
+## Download to your device
+<img src="./img/download.png" alt="drawing" width="200"/>
 
 ---
 

@@ -33,3 +33,10 @@ msgstr "Назад"
 
 msgid "Support the project"
 msgstr "Поддержать проект"
+
+msgid "Start event"
+msgstr "Начало события"
+
+msgid "Event end"
+msgstr "Окончание события"
+

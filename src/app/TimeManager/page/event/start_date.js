@@ -2,6 +2,8 @@ import { push } from '@zos/router'
 import { Time } from '@zos/sensor'
 import { widget, createWidget } from '@zos/ui'
 import { DayEvents } from '../../utils/Globals'
+import { getText } from '@zos/i18n'
+
 
 Page({
     onInit(params) {
@@ -74,7 +76,7 @@ Page({
         }
 
         const picker_widget = createWidget(widget.WIDGET_PICKER, {
-            title: 'Event start',
+            title: getText('Start event'),
             subtitle: '',
             nb_of_columns: 5,
             single_wide: true,
