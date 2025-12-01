@@ -1,11 +1,10 @@
 # Event Manager for Amazfit Smartwatches
 
-![preview](./img/preview.png)
-![preview](./img/event.png)
-![preview](./img/list.png)
-![preview](./img/date.png)
-![preview](./img/color.png)
-
+<img src="./img/preview.png" alt="drawing" width="200"/>
+<img src="./img/event.png" alt="drawing" width="200"/>
+<img src="./img/list.png" alt="drawing" width="200"/>
+<img src="./img/date.png" alt="drawing" width="200"/>
+<img src="./img/color.png" alt="drawing" width="200"/>
 
 ## English Version
 
