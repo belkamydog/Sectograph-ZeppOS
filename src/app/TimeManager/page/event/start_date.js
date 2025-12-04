@@ -66,7 +66,6 @@ Page({
                 else {
                     const current_event = JSON.parse(params)
                     result = {description: current_event.description, start: startDate}
-                    console.log('RESULT '+JSON.stringify(result))
                      push({
                         url: 'page/event/end_date',
                         params: result,

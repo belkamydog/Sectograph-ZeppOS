@@ -72,7 +72,6 @@ Page({
                 else {
                     const current_event = JSON.parse(params)
                     result = {description: current_event.description, start: current_event.start, end: endDate.toISOString()}
-                    console.log('END: ' + JSON.stringify(result))
                      push({
                         url: 'page/event/color',
                         params: JSON.stringify(result)

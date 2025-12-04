@@ -35,6 +35,7 @@
             "page/event/color",
             "page/event/start_date",
             "page/event/end_date",
+            "page/event/repeat",
             "page/event/description"
           ]
         },

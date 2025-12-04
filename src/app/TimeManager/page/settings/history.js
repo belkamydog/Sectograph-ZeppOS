@@ -31,7 +31,6 @@ Page({
     },
 
     initDeleteRadioGroup(){
-        console.log(DayEvents.getAutoDelete())
         const radioGroup = createWidget(widget.RADIO_GROUP, {
             x: 0,
             y: 0,
@@ -42,7 +41,6 @@ Page({
             check_func: (group, index, checked) => {
                 if (checked){
                     index_auto_delete = index
-                    console.log('CHECKED ' + index_auto_delete)
                 } 
             }
         })

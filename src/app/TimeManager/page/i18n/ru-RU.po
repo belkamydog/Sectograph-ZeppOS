@@ -66,5 +66,20 @@ msgstr "Подтвердить"
 msgid "Delete events:"
 msgstr "Удалять события:"
 
+msgid "Repeat event:"
+msgstr "Повторять событие:"
+
+msgid "Main screen"
+msgstr "На главную"
+
+msgid "Every day"
+msgstr "Каждый день"
+
+msgid "Every week"
+msgstr "Каждую неделю"
+
+msgid "Every month"
+msgstr "Каждый месяц"
+
 msgid "Attention! Some events can be deleted!"
 msgstr "Внимание! Некоторые события могут быть удалены!"

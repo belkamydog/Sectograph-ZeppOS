@@ -40,7 +40,39 @@ export class EventsManager {
       this.uploadActualEvents()
     }
 
+    repeateRuleForMainPage(ev){
+      let tmRepeat = 0
+      if (ev.repeat == 1){
+        tmRepeat = 24 * HOUR_MS
+      } else if ( ev.repeat == 2){
+        tmRepeat = 7 * 24 * HOUR_MS
+      } else if (ev.repeat == 3){
+        tmRepeat = EventsManager.getMsToSameDateInNextMonth(ev)
+      }
+      const start = new Date(ev.start)
+      const end = new Date(ev.end)
+      if (ev.repeat > 0) {
+        let new_start = start.getTime()
+        let new_end = end.getTime()
+        let new_ev = {...ev}
+        new_ev.repeat = 0
+        new_start += HOUR_MS * tmRepeat
+        new_end += HOUR_MS * tmRepeat
+        new_ev.start = new Date(new_start)
+        new_ev.end = new Date(new_end)
+        while (this.eventsFilter(new_ev)){
+          this.listOfCurrentDayEvents.push(EventsManager.addColorAnglesToEvent({...new_ev}))
+          if (ev.repeat == 3) tmRepeat = EventsManager.getMsToSameDateInNextMonth(ev)
+          new_start += HOUR_MS * tmRepeat
+          new_end += HOUR_MS * tmRepeat
+          new_ev.start = new Date(new_start)
+          new_ev.end = new Date(new_end)
+        }
+      }
+    }
+
     deleteFilter(event){
+      if (event.repeat && event.repeat > 0) return false
       let result = false
       const now = new Date()
       const end = new Date(event.end)
@@ -73,23 +105,19 @@ export class EventsManager {
     }
 
     eventsFilter(event){
-      console.log(JSON.stringify(event))
       let result = false
       let now = new Date()
       let startEv = new Date(event.start)
       let endEv = new Date(event.end)
       if ((startEv.getTime() - now.getTime()) <= (10 * HOUR_MS) && startEv >= now){
         result = true
-        console.log(result+ '1')
       }
       else if ((now.getTime() - endEv.getTime()) <= 2 * HOUR_MS && now >= endEv){
         result = true
-        console.log(result+ '2')
 
       }
       else if (now >= startEv && now <= endEv){
         result = true
-        console.log(result+ '3')
       }
       return result 
     }
@@ -111,14 +139,15 @@ export class EventsManager {
 
     uploadActualEvents(){
       const file = EventsManager.readEvents()
+      this.listOfCurrentDayEvents = []
       let afterDeleteFilterArr = []
       if (file && file.trim()){
         const loadedEvents = JSON.parse(file)
         for (const ev of loadedEvents){
           if (!this.deleteFilter(ev)){
             afterDeleteFilterArr.push(ev)
+            this.repeateRuleForMainPage(ev)
             if (this.eventsFilter(ev)){
-              console.log('after delete filter')
               const updatedEvent = EventsManager.addColorAnglesToEvent(ev)
               this.listOfCurrentDayEvents.push(updatedEvent)
             }
@@ -283,7 +312,7 @@ export class EventsManager {
       if (new Date(event.start) < deleteTime) {
         startAngle = EventsManager.convertTimeToAngle(deleteTime)
       }
-      else if(new Date(event.end) > timeNow+ 10 * HOUR_MS){
+      else if(new Date(event.end).getTime() > timeNow+ 10 * HOUR_MS){
         endAngle = EventsManager.convertTimeToAngle(timeNow + 10 * HOUR_MS)
       }
       startAngle = startAngle > endAngle ? (startAngle-360) : startAngle
@@ -321,4 +350,21 @@ export class EventsManager {
         return pointAngle >= event.startAngle || pointAngle <= event.endAngle;
       }
     }
+
+  static getMsToSameDateInNextMonth(ev) {
+      const start = new Date(ev.start)
+      const currentDay = start.getDate()
+      let nextMonth = start.getMonth() + 1
+      let nextYear = start.getFullYear()
+      if (nextMonth > 11) {
+          nextMonth = 0
+          nextYear += 1
+      }
+      const daysInNextMonth = new Date(nextYear, nextMonth + 1, 0).getDate()
+      const nextDay = Math.min(currentDay, daysInNextMonth)
+      const nextEventDate = new Date(nextYear, nextMonth, nextDay)
+      const diffInMs = nextEventDate.getTime() - start.getTime()
+      return diffInMs
+  }
+
 }

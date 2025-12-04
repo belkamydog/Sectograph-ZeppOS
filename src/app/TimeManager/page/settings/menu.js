@@ -3,6 +3,7 @@ import { createModal, MODAL_CONFIRM } from '@zos/interaction'
 import { push } from '@zos/router'
 import { getText } from '@zos/i18n'
 import { styleColors } from '../../utils/Constants'
+import { DayEvents } from '../../utils/Globals'
 
 Page({
 
@@ -29,9 +30,10 @@ Page({
             onClick: (keyObj) => {
                 const { type } = keyObj
                 if (type === MODAL_CONFIRM) {
-                push({
-                    url: 'page/settings/menu',
-                })
+                    push({
+                        url: 'page/settings/menu',
+                    })
+                    DayEvents.clearAllHistory()
                     dialog.show(false)
                 } else {
                     dialog.show(false)

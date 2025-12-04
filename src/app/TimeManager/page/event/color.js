@@ -1,10 +1,8 @@
 import { createWidget, widget, prop } from '@zos/ui'
 import { getText } from '@zos/i18n'
-import { px } from '@zos/utils'
 import { COLORS } from '../../utils/Constants'
 import { DayEvents } from '../../utils/Globals';
 import { push } from '@zos/router'
-import { color } from 'chart.js/helpers';
 
 
 
@@ -41,10 +39,9 @@ Page({
                             let result = ''
                             const current_event = JSON.parse(params)
                             result = {description: current_event.description, start: current_event.start, end: current_event.end, color: currentColor}
-                            DayEvents.addEvent(result)
                             push({
-                                url: 'page/index',
-                                params: 'clear'
+                                url: 'page/event/repeat',
+                                params: JSON.stringify(result)
                             })
                     }
                 })
