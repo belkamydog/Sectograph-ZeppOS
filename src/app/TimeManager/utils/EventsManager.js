@@ -42,13 +42,9 @@ export class EventsManager {
 
     repeateRuleForMainPage(ev){
       let tmRepeat = 0
-      if (ev.repeat == 1){
-        tmRepeat = 24 * HOUR_MS
-      } else if ( ev.repeat == 2){
-        tmRepeat = 7 * 24 * HOUR_MS
-      } else if (ev.repeat == 3){
-        tmRepeat = EventsManager.getMsToSameDateInNextMonth(ev)
-      }
+      if (ev.repeat == 1) tmRepeat = 24 * HOUR_MS
+      else if ( ev.repeat == 2) tmRepeat = 7 * 24 * HOUR_MS
+      else if (ev.repeat == 3) tmRepeat = EventsManager.getMsToSameDateInNextMonth(ev)
       const start = new Date(ev.start)
       const end = new Date(ev.end)
       if (ev.repeat > 0) {
@@ -137,6 +133,49 @@ export class EventsManager {
       return result
     }
 
+    getListOfEventsBeforeDate(date){
+      const week = EventsManager.getWeekRange(date)
+      const loaded = this.getListOfALlEvents()
+      let resultList = []
+      for (const ev of loaded){
+        let tmRepeat = 0
+        if (ev.repeat == 1) tmRepeat = 24 * HOUR_MS
+        else if ( ev.repeat == 2) tmRepeat = 7 * 24 * HOUR_MS
+        else if (ev.repeat == 3) tmRepeat = EventsManager.getMsToSameDateInNextMonth(ev)
+        console.log('RES_LIST' + ev.repeat + ev.start)
+        if (ev.repeat > 0) {
+          const start = new Date(ev.start)
+          const end = new Date(ev.end)
+          let new_start = start.getTime()
+          let new_end = end.getTime()
+          let new_ev = {...ev}
+          new_ev.repeat = 0
+          if (new_start >= week.start.getTime()) 
+              resultList.push(new Event(new_ev))  
+          new_start += tmRepeat
+          new_end += tmRepeat
+          new_ev.start = new Date(new_start)
+          new_ev.end = new Date(new_end)
+          while (new_start <= week.end.getTime()) {
+            if (new_start >= week.start.getTime()) 
+              resultList.push(new Event(new_ev))
+            if (ev.repeat == 3) tmRepeat = EventsManager.getMsToSameDateInNextMonth(ev)
+            new_start += tmRepeat
+            new_end += tmRepeat
+            new_ev.start = new Date(new_start)
+            new_ev.end = new Date(new_end)
+          }
+        }
+        else {
+          const start = new Date(ev.start)
+          if ( start >= week.start && start <= week.end)
+            resultList.push(ev)
+        }
+      }
+      resultList.sort((a, b) => new Date(a.start) - new Date(b.start));
+      return resultList
+    }
+
     uploadActualEvents(){
       const file = EventsManager.readEvents()
       this.listOfCurrentDayEvents = []
@@ -169,7 +208,8 @@ export class EventsManager {
               start: ev.start,
               end: ev.end, 
               description: ev.description,
-              color: ev.color
+              color: ev.color,
+              repeat: ev.repeat
             } 
             result.push(eventWithId)
          }
@@ -351,20 +391,30 @@ export class EventsManager {
       }
     }
 
-  static getMsToSameDateInNextMonth(ev) {
-      const start = new Date(ev.start)
-      const currentDay = start.getDate()
-      let nextMonth = start.getMonth() + 1
-      let nextYear = start.getFullYear()
-      if (nextMonth > 11) {
-          nextMonth = 0
-          nextYear += 1
-      }
-      const daysInNextMonth = new Date(nextYear, nextMonth + 1, 0).getDate()
-      const nextDay = Math.min(currentDay, daysInNextMonth)
-      const nextEventDate = new Date(nextYear, nextMonth, nextDay)
-      const diffInMs = nextEventDate.getTime() - start.getTime()
-      return diffInMs
-  }
+    static getMsToSameDateInNextMonth(ev) {
+        const start = new Date(ev.start)
+        const currentDay = start.getDate()
+        let nextMonth = start.getMonth() + 1
+        let nextYear = start.getFullYear()
+        if (nextMonth > 11) {
+            nextMonth = 0
+            nextYear += 1
+        }
+        const daysInNextMonth = new Date(nextYear, nextMonth + 1, 0).getDate()
+        const nextDay = Math.min(currentDay, daysInNextMonth)
+        const nextEventDate = new Date(nextYear, nextMonth, nextDay)
+        const diffInMs = nextEventDate.getTime() - start.getTime()
+        return diffInMs
+    }
 
+    static getWeekRange(date) {
+      const currentDate = new Date(date);
+      const dayOfWeek = currentDate.getDay(); // 0-воскресенье, 1-понедельник, ..., 6-суббота
+      const diffToMonday = dayOfWeek === 0 ? -6 : 1 - dayOfWeek;
+      const monday = new Date(currentDate);
+      monday.setDate(currentDate.getDate() + diffToMonday);
+      const sunday = new Date(monday);
+      sunday.setDate(monday.getDate() + 6);
+      return { start: monday, end: sunday };
+    }
 }

@@ -6,6 +6,7 @@ export class Event {
     start
     end
     color
+    repeat
 
     ago_time
     date_period
@@ -19,6 +20,7 @@ export class Event {
         this.start = new Date(event.start)
         this.end = new Date (event.end)
         this.color = event.color
+        this.repeat = event.repeat
         this.timePeriod()
         this.eventStatus()
         this.datePeriod()
@@ -37,19 +39,35 @@ export class Event {
         if (now < this.start){
             const {hours, minutes} = Event.calculateTimeDifference(now, this.start)
             result = getText('After')+': '
-            result += hours > 0 ? hours + getText('h') : ''
-            result += minutes > 0 ?  ' ' +  minutes + getText('m') : ''
+            if (hours > 24) {
+                const daysCount =  Math.ceil(hours/24)
+                result += daysCount > 1? daysCount + ' ' + getText('days') : daysCount + ' ' + getText('day')
+            }
+            else {
+                result += hours > 0 ? hours + getText('h') : ''
+                result += minutes > 0 ?  ' ' +  minutes + getText('m') : ''
+            }
         }
         else if (now > this.end){
             const {hours, minutes} = Event.calculateTimeDifference(this.end, now)
-            result += hours > 0 ? hours + getText('h') : ''
-            result += minutes > 0 ?  ' ' +  minutes + getText('m') + ' ' : ''
+            if (hours > 24) {
+                const daysCount =  Math.ceil(hours/24)
+                result += daysCount > 1? daysCount + ' ' + getText('days') : daysCount + ' ' + getText('day')
+            }
+            else {
+                result += hours > 0 ? hours + getText('h') : ''
+                result += minutes > 0 ?  ' ' +  minutes + getText('m') + ' ' : ''
+            }
             result += ' ' + getText('ago')         
         }
         else {
             const {hours, minutes} = Event.calculateTimeDifference(now, this.end)
             result += getText('Left') + ': '
             if (hours == 0) result += minutes + ' ' +getText('m')
+            else if (hours > 24) {
+                const daysCount =  Math.ceil(hours/24)
+                result += daysCount > 1? daysCount + ' ' + getText('days') : daysCount + ' ' + getText('day')
+            }
             else result += hours + getText('h') + ' ' + minutes + getText('m')
         }
         this.status = result

@@ -81,5 +81,33 @@ msgstr "Каждую неделю"
 msgid "Every month"
 msgstr "Каждый месяц"
 
+msgid "day"
+msgstr "дн"
+
+msgid "days"
+msgstr "дн"
+
 msgid "Attention! Some events can be deleted!"
 msgstr "Внимание! Некоторые события могут быть удалены!"
+
+msgid "Monday"
+msgstr "Понедельник"
+
+msgid "Tuesday"
+msgstr "Вторник"
+
+msgid "Wednesday"
+msgstr "Среда"
+
+msgid "Thursday"
+msgstr "Четверг"
+
+msgid "Friday"
+msgstr "Пятница"
+
+msgid "Saturday"
+msgstr "Суббота"
+
+msgid "Sunday"
+msgstr "Воскресенье"
+

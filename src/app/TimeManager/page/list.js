@@ -5,6 +5,7 @@ import { push } from '@zos/router'
 import { getText } from '@zos/i18n'
 import { styleColors } from '../utils/Constants';
 import {log} from '@zos/utils'
+import { EventsManager } from '../utils/EventsManager';
 
 
 Page({
@@ -38,11 +39,34 @@ Page({
       align_v: align.CENTER_V,
       color: styleColors.white
     })
-  },
+      const period = EventsManager.getWeekRange(new Date())
+      createWidget(widget.TEXT, {
+        text: period.start.getDate() + '.'+ period.start.getMonth() + ' - ' + period.end.getDate() + '.'+ period.end.getMonth(),
+        x: 0,
+        y: 90,
+        w: 480,
+        h: 50,
+        text_size: 35,
+        align_h: align.CENTER_H,
+        align_v: align.CENTER_V,
+        color: styleColors.white
+      })
+    },
 
   addLinkToDeleteAddBtn(arrEv){
+    const weekDays = [
+      'Sunday' ,   // Воскресенье
+      'Monday',    // Понедельник
+      'Tuesday',   // Вторник
+      'Wednesday', // Среда
+      'Thursday',  // Четверг
+      'Friday',    // Пятница
+      'Saturday',  // Суббота
+    ];
     let result = []
     for (let i of arrEv){
+      const wd = new Date(i.start).getDay()
+      i.weekDay = getText(weekDays[wd])
       i.del_img = 'delete.png'
       result.push(i)
     } 
@@ -75,13 +99,14 @@ Page({
   onInit() {
     this.initBg()
     this.initTitle();
-    const allEvents = this.addLinkToDeleteAddBtn(DayEvents.getListOfALlEvents())
+    EventsManager.getWeekRange(date)
+    const allEvents = this.addLinkToDeleteAddBtn(DayEvents.getListOfEventsBeforeDate(new Date()))
     if (allEvents.length == 1) 
         this.ifEmptyListOfEventsLabel()
     if (allEvents){
       const scrollList = createWidget(widget.SCROLL_LIST, {
           x: (480-380)/2,
-          y: 50,
+          y: 140,
           h: 480,
           w: 380,
           radius:10,
@@ -98,12 +123,13 @@ Page({
                 { x: 20, y: 0, w: 340, h: 80, key: 'description', color: 0xffffff, text_size: 35, align_h: align.CENTER_H },
                 { x: 20, y: 60, w: 380/2, h: 40, key: 'date_period', color: 0xffffff, text_size: 30, align_h: align.LEFT},
                 { x: 380/2, y: 60, w: 380/2, h: 40, key: 'period', color: 0xffffff, text_size: 30, align_h: align.LEFT},
-                { x: 0, y: 100, w: 380, h: 40, key: 'status', color: 0xffffff, text_size: 30, align_h: align.CENTER_H},
+                { x: 0, y: 100, w: 380, h: 40, key: 'weekDay', color: 0xffffff, text_size: 30, align_h: align.CENTER_H},
+                { x: 0, y: 150, w: 380, h: 40, key: 'status', color: 0xffffff, text_size: 30, align_h: align.CENTER_H},
               ],
-              text_view_count: 4,
+              text_view_count: 5,
               image_view: [{ x:410, y: 65, w: 64, h: 64, key: 'del_img', action: true }],
               image_view_count: 1,
-              item_height: 150
+              item_height: 200
             },
             {
               type_id: 2,
