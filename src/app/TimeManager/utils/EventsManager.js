@@ -16,7 +16,7 @@ export class EventsManager {
      * 0-never 1-dayly, 2-weekly, 3-monthly,
      */
     autoDelete
-    
+
     constructor(){
       this.autoDelete = 0
       this.initSettings()
@@ -62,6 +62,18 @@ export class EventsManager {
      */
     getAutoDelete(){ return this.autoDelete }
 
+    /**
+     * Clear all of events
+     */
+    clearAllHistory(){
+      writeFileSync({
+        path: 'events',
+        data: '',
+        options: {
+            encoding: 'utf8',
+        }
+      })
+    }
 
     repeateRuleForMainPage(ev){
       let tmRepeat = 0
@@ -114,15 +126,6 @@ export class EventsManager {
       return result
     }
 
-    clearAllHistory(){
-      writeFileSync({
-        path: 'events',
-        data: '',
-        options: {
-            encoding: 'utf8',
-        }
-      })
-    }
 
     eventsFilter(event){
       let result = false

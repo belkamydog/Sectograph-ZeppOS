@@ -141,7 +141,8 @@ Page({
                 logger.log('Edit repeate done new repeat: ' + result.repeat)
                 DayEvents.editEvent(result)
                 push({
-                    url: 'page/event'
+                    url: 'page/event',
+                    params: JSON.stringify(result)
                 })
             }
         })
