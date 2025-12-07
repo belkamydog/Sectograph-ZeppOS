@@ -88,6 +88,7 @@ export class EventsManager {
         let new_start = new Date(ev.start).getTime()
         let new_end = new Date(ev.end).getTime()
         let repeated_event = {...ev}
+        repeated_event.check_repeat = ev.repeat
         repeated_event.repeat = 0
         new_start += HOUR_MS * repeatTimeMs
         new_end += HOUR_MS * repeatTimeMs
@@ -99,6 +100,7 @@ export class EventsManager {
           if (ev.repeat == 3) repeatTimeMs = EventsManager.getMsToSameDateInNextMonth(ev)
           new_start += HOUR_MS * repeatTimeMs
           new_end += HOUR_MS * repeatTimeMs
+          repeated_event.check_repeat = ev.repeat
           repeated_event.start = new Date(new_start)
           repeated_event.end = new Date(new_end)
           logger.log('Repeat: ' + JSON.stringify(repeated_event))
@@ -219,23 +221,21 @@ export class EventsManager {
     getListOfEventsInCurrentWeek(date){
       logger.log('Creating events list in current week...')
       const week = EventsManager.getWeekRange(date)
-      console.log('WEEK ' + JSON.stringify(week))
       const loaded = this.getListOfALlEvents()
-      for(const i of loaded)
-        console.log('ALL ' + JSON.stringify(i))
       let resultList = []
       for (const ev of loaded){
         let repeatTimeMs = EventsManager.getRepeatTimeMs(ev)
+        ev.check_repeat = ev.repeat
         if (ev.repeat > 0) {
           const start = new Date(ev.start)
           const end = new Date(ev.end)
           let new_start = start.getTime()
           let new_end = end.getTime()
           let new_ev = {...ev}
+          new_ev.check_repeat = ev.repeat
           new_ev.repeat = 0
           if (new_start >= week.start.getTime() && new_start <= week.end.getTime() ){
             resultList.push(new Event(new_ev))  
-            console.log('SINGLE ' + JSON.stringify(week.start + ' <= ' + new Date(new_start)))
           } 
           new_start += repeatTimeMs
           new_end += repeatTimeMs
@@ -247,6 +247,7 @@ export class EventsManager {
             if (ev.repeat == 3) repeatTimeMs = EventsManager.getMsToSameDateInNextMonth(ev)
             new_start += repeatTimeMs
             new_end += repeatTimeMs
+            new_ev.check_repeat = ev.repeat
             new_ev.start = new Date(new_start)
             new_ev.end = new Date(new_end)
           }

@@ -1,6 +1,6 @@
 import { createModal, MODAL_CONFIRM } from '@zos/interaction'
 import { onGesture, GESTURE_RIGHT } from '@zos/interaction'
-import { createWidget, widget, align } from '@zos/ui'
+import { createWidget, widget, align, show_level } from '@zos/ui'
 import { back, push } from '@zos/router'
 import { Event } from '../utils/Event'
 import { DayEvents } from '../utils/Globals'
@@ -52,43 +52,55 @@ Page ({
         })
         this.eventLabel = createWidget(widget.TEXT, {
             x: (480-300)/2,
-            y: 220,
+            y: 200,
             w: 300,
             h: 46,
             color: styleColors.white,
             align_h: align.CENTER_H,
             align_v: align.CENTER_V,
-            text_size: 36,
+            text_size: 40,
             text: current_event.description
         }),
         this.timePeriod = createWidget(widget.TEXT, {
             x: (480-300)/2,
-            y: 290,
+            y: 270,
             w: 300,
             h: 46,
             align_h: align.CENTER_H,
             align_v: align.CENTER_V,
             color: styleColors.white,
-            text_size: 34,
+            text_size: 38,
             text: pageData.getPeriod()
         }),
+
+        createWidget(widget.TEXT, {
+            x: 0,
+            y: 340,
+            w: 480,
+            h: 46,
+            align_h: align.CENTER_H,
+            align_v: align.CENTER_V,
+            color: styleColors.white,
+            text_size: 40,
+            text: pageData.getDuration()
+        }),
         this.eventStatus = createWidget(widget.TEXT, {
-            x: (480-288)/2,
-            y: 150,
-            w: 288,
+            x: 0,
+            y: 130,
+            w: 480,
             h: 40,
             align_h: align.CENTER_H,
             align_v: align.CENTER_V,
             color: styleColors.white,
-            text_size: 34,
+            text_size: 38,
             text: pageData.getStatus()
         }),        
         this.progressArcBackground = createWidget(widget.ARC_PROGRESS, {
             center_x: 240,
             center_y: 240,
             radius: 220,
-            start_angle: -180,
-            end_angle: 180,
+            start_angle: -150,
+            end_angle: 150,
             color: styleColors.gray,
             line_width: 20,
             level: 100
@@ -97,8 +109,8 @@ Page ({
             center_x: 240,
             center_y: 240,
             radius: 220,
-            start_angle: -180,
-            end_angle: 180,
+            start_angle: -150,
+            end_angle: 150,
             color: 0x22F91A,
             line_width: 20,
             level: pageData.getlevel()
@@ -116,7 +128,7 @@ Page ({
         })
         this.widgets.editBtn = createWidget(widget.BUTTON, {
             x: (480-70)/2,
-            y: 360,
+            y: 400,
             w: 70,
             h: 70,
             normal_src: 'edit.png',

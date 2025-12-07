@@ -116,6 +116,22 @@ msgid "Edit"
 msgstr "Изменить"
 
 
+msgid "Create"
+msgstr "Создать"
+
+
+msgid "Once"
+msgstr "Один раз"
+
+msgid "Every day"
+msgstr "Каждый день"
+
+msgid "Every week"
+msgstr "Каждую неделю"
+
+msgid "Every month"
+msgstr "Каждый месяц"
+
 msgid "There are no events"
 msgstr "Нет событий"
 

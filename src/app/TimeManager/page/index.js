@@ -4,7 +4,7 @@ import { push } from '@zos/router'
 import { Time } from '@zos/sensor'
 import { DayEvents, wfNumbers} from '../utils/Globals';
 import { onGesture, GESTURE_LEFT } from '@zos/interaction'
-import { HOUR_MS } from '../utils/Constants';
+import { HOUR_MS, WEEK_DAYS } from '../utils/Constants';
 import { EventsManager } from '../utils/EventsManager';
 import { Event } from '../utils/Event';
 import { styleColors } from '../utils/Constants'
@@ -21,6 +21,7 @@ Page({
     destroyArrow: null,
     minuteArrow: null,
     digitTime: null,
+    date,
     wfNumbers:{
       _0: null,
       _1: null,
@@ -68,7 +69,7 @@ Page({
   initWfNumbers() {
     const centerX = 240;
     const centerY = 240;
-    const radius = 200;
+    const radius = 195;
     wfNumbers.initWatchFace(new Date().getHours())
     const numbers = wfNumbers.getTimePointDigits()
     let angle = -90
@@ -83,8 +84,8 @@ Page({
         w: 50,
         h: 50,
         color: 0xFFFFFF,
+        font: 'fonts/Digiface (Rus by MarkStarikov2014) Regular.ttf',
         text_size: 40,
-        font: 'fonts/Mechagrunge.ttf',
         align_h: align.CENTER_H,
         align_v: align.CENTER_V,
         text: numbers[i]
@@ -118,7 +119,7 @@ Page({
     this.circle = createWidget(widget.CIRCLE, {
       center_x: 240,
       center_y: 240,
-      radius: 109,
+      radius: 111,
       color: styleColors.white_smoke,
     })
     this.circle = createWidget(widget.CIRCLE, {
@@ -157,23 +158,54 @@ Page({
       this.renderEvents(DayEvents.getListOfCurrentDayEvents())
   },
 
+
   initDigitalTime(){
-    this.timeSensor = new Time()
-    this.digitTime = createWidget(widget.TEXT, {
-      x: (480-180)/2,
-      y: (480-180)/2,
+    const timeSensor = new Time()
+    const digitTime = createWidget(widget.TEXT, {
+      x: (480-190)/2,
+      y: (480-170)/2,
       w: 180,
       h: 180,
       color: 0x0000,
-      text_size: 67,
-      font: 'fonts/Mechagrunge.ttf',
+      text_size: 70,
+      font: 'fonts/Digiface (Rus by MarkStarikov2014) Regular.ttf',
       align_h: align.CENTER_H,
       align_v: align.CENTER_V,
-      text: Event.addZero(this.timeSensor.getHours().toString()) + ':' + Event.addZero(this.timeSensor.getMinutes().toString())
+      text: Event.addZero(timeSensor.getHours().toString()) + ':' + Event.addZero(timeSensor.getMinutes().toString())
     })
+    const now = new Date()
+    const date = createWidget(widget.TEXT, {
+      x: (480-180)/2,
+      y: 105,
+      w: 180,
+      h: 180,
+      color: 0x0000,
+      text_size: 25,
+      font: 'fonts/Digiface (Rus by MarkStarikov2014) Regular.ttf',
+      align_h: align.CENTER_H,
+      align_v: align.CENTER_V,
+      text: Event.addZero(now.getDate().toString()) + 
+        '.' + Event.addZero((now.getMonth()+1).toString()) + '.' + now.getFullYear().toString()
+    })
+
+    const weekDay = createWidget(widget.TEXT, {
+      x: (480-180)/2,
+      y: 200,
+      w: 180,
+      h: 180,
+      color: 0x0000,
+      text_size: 21,
+      font: 'fonts/Digiface (Rus by MarkStarikov2014) Regular.ttf',
+      align_h: align.CENTER_H,
+      align_v: align.CENTER_V,
+      text: getText(WEEK_DAYS[now.getDay()])
+    })
+
     const self = this
-    this.timeSensor.onPerMinute(function cb() {
-      self.updateWidgets()                  
+    timeSensor.onPerMinute(function cb() {
+      self.updateWidgets()
+      date.setProperty(widget.TEXT, Event.addZero(now.getDate().toString()) + 
+      '. ' + Event.addZero((now.getMonth()+1).toString()) + '. ' + now.getFullYear().toString())             
     })
   },
 

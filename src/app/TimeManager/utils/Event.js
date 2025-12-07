@@ -16,6 +16,8 @@ export class Event {
     status
     level
     color_state
+    duration = '⏳'
+    check_repeat
 
     constructor(event){
         this.id = event.id
@@ -24,11 +26,13 @@ export class Event {
         this.end = new Date (event.end)
         this.color = event.color
         this.repeat = event.repeat
+        this.check_repeat = event.check_repeat
         this.timePeriod()
         this.eventStatus()
         this.datePeriod()
         this.eventLevel()
         this.weekDay()
+        this.durationEvent()
         this.colorState()
     }
 
@@ -40,6 +44,17 @@ export class Event {
     }
 
     getColorState(){ return this.color_state }
+
+    durationEvent(){
+        const duration = Event.calculateTimeDifference(this.start, this.end)
+        const days = Math.trunc(duration.hours/24)
+        const hours = duration.hours % 24
+        this.duration += days > 0 ? ' ' + days + ' ' + getText('days') : ''
+        this.duration += hours > 0 ? ' ' + hours + ' ' + getText('h') : ''
+        this.duration += duration.minutes > 0 ? ' ' + duration.minutes + ' ' + getText('m') : ''
+    }
+
+    getDuration() {return this.duration}
 
     timePeriod(){
         this.period =  Event.addZero(this.start.getHours().toString()) + ':' +
