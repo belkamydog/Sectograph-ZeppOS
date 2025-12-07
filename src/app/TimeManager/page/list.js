@@ -58,7 +58,7 @@ Page({
     })
     const period = EventsManager.getWeekRange(date)
     createWidget(widget.TEXT, {
-        text: Event.addZero(period.start.getDate()) + '.'+ Event.addZero((period.start.getMonth()+1)) + ' - ' + Event.addZero(period.end.getDate()) + '.'+ Event.addZero((period.end.getMonth()+1)),
+        text: Event.addZero(period.start.getDate()) + '.'+ Event.addZero((period.start.getMonth()+1)) + ' - ' + Event.addZero(period.end.getDate()-1) + '.'+ Event.addZero((period.end.getMonth()+1)),
         x: 0,
         y: 90,
         w: 480,
@@ -266,19 +266,19 @@ Page({
           },
           {
             start: 1,
-            end: separatedByColorInd.past-1,
+            end: separatedByColorInd.past,
             type_id: 1,
             visible: separatedByColorInd.past > 0
           },
           {
-            start: separatedByColorInd.past,
-            end: separatedByColorInd.current-1,
+            start: separatedByColorInd.past == 0 ? 1 : separatedByColorInd.past+1,
+            end: separatedByColorInd.current,
             type_id: 2,
             visible: separatedByColorInd.current > separatedByColorInd.past
           },
           {
-            start: separatedByColorInd.current,
-            end: weekEvents.length - 2,
+            start: separatedByColorInd.current == 0 ? 1 : separatedByColorInd.current+1,
+            end: weekEvents.length - 1,
             type_id: 3,
             visible: separatedByColorInd.future > 0
           },

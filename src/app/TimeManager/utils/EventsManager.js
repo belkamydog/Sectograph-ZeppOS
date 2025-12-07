@@ -219,7 +219,10 @@ export class EventsManager {
     getListOfEventsInCurrentWeek(date){
       logger.log('Creating events list in current week...')
       const week = EventsManager.getWeekRange(date)
+      console.log('WEEK ' + JSON.stringify(week))
       const loaded = this.getListOfALlEvents()
+      for(const i of loaded)
+        console.log('ALL ' + JSON.stringify(i))
       let resultList = []
       for (const ev of loaded){
         let repeatTimeMs = EventsManager.getRepeatTimeMs(ev)
@@ -230,8 +233,10 @@ export class EventsManager {
           let new_end = end.getTime()
           let new_ev = {...ev}
           new_ev.repeat = 0
-          if (new_start >= week.start.getTime()) 
-              resultList.push(new Event(new_ev))  
+          if (new_start >= week.start.getTime() && new_start <= week.end.getTime() ){
+            resultList.push(new Event(new_ev))  
+            console.log('SINGLE ' + JSON.stringify(week.start + ' <= ' + new Date(new_start)))
+          } 
           new_start += repeatTimeMs
           new_end += repeatTimeMs
           new_ev.start = new Date(new_start)
@@ -248,8 +253,9 @@ export class EventsManager {
         }
         else {
           const start = new Date(ev.start)
-          if ( start >= week.start && start <= week.end)
+          if ( start >= week.start && start <= week.end){
             resultList.push(ev)
+          }
         }
       }
       resultList.sort((a, b) => new Date(a.start) - new Date(b.start));
@@ -495,7 +501,15 @@ export class EventsManager {
       const monday = new Date(currentDate);
       monday.setDate(currentDate.getDate() + diffToMonday);
       const sunday = new Date(monday);
-      sunday.setDate(monday.getDate() + 6);
+      monday.setHours(0)
+      monday.setMinutes(0)
+      monday.setSeconds(0)
+      monday.setMilliseconds(0)
+      sunday.setHours(0)
+      sunday.setMinutes(0)
+      sunday.setSeconds(0)
+      sunday.setMilliseconds(0)
+      sunday.setDate(monday.getDate() + 7);
       return { start: monday, end: sunday };
     }
 
