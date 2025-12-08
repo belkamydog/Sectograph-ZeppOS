@@ -27,6 +27,7 @@ Page({
     },
 
     onInit(params){
+        this.registerGes()
         logger.log('Init edit repeat page with params: ' + params)
         createWidget(widget.TEXT, {
             text: getText('Repeat event:'),

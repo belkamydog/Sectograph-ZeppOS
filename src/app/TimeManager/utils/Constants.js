@@ -178,6 +178,17 @@ export const WEEK_DAYS = [
   'Saturday',
 ]
 
+export const WEEK_DAYS_SHORT = [
+    "sun",    // Sunday
+    "mon",   // Monday
+    "tue",   // Tuesday
+    "wed",   // Wednesday
+    "thu",   // Thursday
+    "fri",   // Friday
+    "sat",   // Saturday
+];
+
+
 export const DATE_TIME_PEACKER = {
     font_size: 30,
     select_font_size: 30,

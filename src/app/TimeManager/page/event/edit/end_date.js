@@ -27,7 +27,7 @@ Page({
 
     onInit(params) {
         logger.log('Init edit end of event with params: ' + params)
-
+        this.registerGes()
         let needToEdit = JSON.parse(params)
         const end = new Date(needToEdit.end)
         let currentValues = {

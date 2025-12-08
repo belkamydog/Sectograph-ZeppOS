@@ -471,8 +471,10 @@ export class EventsManager {
       let pointAngle = 90 - Math.atan2(240 - y, x - 240) * (180 / Math.PI);
       if (pointAngle < 0) pointAngle = 360 + pointAngle
       if (event.startAngle <= event.endAngle) {
-        if (event.startAngle < 0 ) pointAngle = pointAngle - 360 // ? if 12 to 13
-
+        if (event.startAngle < 0 && pointAngle > 270) {
+          console.log('POINT ' + pointAngle + 'start ' + event.startAngle + ' endAngle ' + event.endAngle )
+          pointAngle = pointAngle -360 // ? if 12 to 13
+        }
         return pointAngle >= event.startAngle && pointAngle <= event.endAngle;
       } else {
         return pointAngle >= event.startAngle || pointAngle <= event.endAngle;

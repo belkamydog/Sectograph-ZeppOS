@@ -34,6 +34,7 @@ Page ({
     },
 
     onInit(params){
+        this.registerGes()
         const current_event = JSON.parse(params)
         const pageData = new Event(current_event)
         this.widgets.deleteDialog = createModal({

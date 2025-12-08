@@ -4,7 +4,7 @@ import { push, launchApp } from '@zos/router'
 import { Time } from '@zos/sensor'
 import { DayEvents, wfNumbers} from '../utils/Globals';
 import { onGesture, GESTURE_LEFT } from '@zos/interaction'
-import { HOUR_MS, WEEK_DAYS } from '../utils/Constants';
+import { HOUR_MS, WEEK_DAYS_SHORT } from '../utils/Constants';
 import { EventsManager } from '../utils/EventsManager';
 import { Event } from '../utils/Event';
 import { styleColors } from '../utils/Constants'
@@ -55,13 +55,13 @@ Page({
     this.circle = createWidget(widget.CIRCLE, {
       center_x: 240,
       center_y: 240,
-      radius: 227,
+      radius: 240,
       color: styleColors.white_smoke,
     })
     this.circle = createWidget(widget.CIRCLE, {
       center_x: 240,
       center_y: 240,
-      radius: 225,
+      radius: 235,
       color: styleColors.black,
     })
   },
@@ -104,14 +104,19 @@ Page({
       pos_x: 240,
       pos_y: 0,
       angle: EventsManager.convertTimeToAngle(new Date() - HOUR_MS*2),
-      src: 'arrows/minute.png'
+      src: 'arrows/deadLine.png'
     })
     this.hourArrow = createWidget(widget.TIME_POINTER, {
       hour_centerX: 240,
       hour_centerY: 240,
       hour_posX: 2,
-      hour_posY: 220,
+      hour_posY: 240,
       hour_path: 'arrows/hour.png',
+      minute_centerX: 240,
+      minute_centerY: 240,
+      minute_posX: 2,
+      minute_posY: 240,
+      minute_path: 'arrows/minute.png',
     })
   },
 
@@ -125,14 +130,8 @@ Page({
     this.circle = createWidget(widget.CIRCLE, {
       center_x: 240,
       center_y: 240,
-      radius: 108,
+      radius: 105,
       color: styleColors.black,
-    })
-    this.circle = createWidget(widget.CIRCLE, {
-      center_x: 240,
-      center_y: 240,
-      radius: 100,
-      color: styleColors.white_smoke,
     })
   },
 
@@ -158,7 +157,6 @@ Page({
       this.renderEvents(DayEvents.getListOfCurrentDayEvents())
   },
 
-
   initDigitalTime(){
     const timeSensor = new Time()
     const digitTime = createWidget(widget.TEXT, {
@@ -166,7 +164,7 @@ Page({
       y: (480-170)/2,
       w: 180,
       h: 180,
-      color: 0x0000,
+      color: styleColors.white_smoke,
       text_size: 70,
       font: 'fonts/Digiface (Rus by MarkStarikov2014) Regular.ttf',
       align_h: align.CENTER_H,
@@ -176,16 +174,16 @@ Page({
     const now = new Date()
     const date = createWidget(widget.TEXT, {
       x: (480-180)/2,
-      y: 105,
+      y: 95,
       w: 180,
       h: 180,
-      color: 0x0000,
-      text_size: 25,
+      color: styleColors.white_smoke,
+      text_size: 40,
       font: 'fonts/Digiface (Rus by MarkStarikov2014) Regular.ttf',
       align_h: align.CENTER_H,
       align_v: align.CENTER_V,
       text: Event.addZero(now.getDate().toString()) + 
-        '.' + Event.addZero((now.getMonth()+1).toString()) + '.' + now.getFullYear().toString()
+        '.' + Event.addZero((now.getMonth()+1).toString())
     })
     date.addEventListener(event.SELECT, function() {
       launchApp({
@@ -196,15 +194,15 @@ Page({
 
     const weekDay = createWidget(widget.TEXT, {
       x: (480-180)/2,
-      y: 200,
+      y: 210,
       w: 180,
       h: 180,
-      color: 0x0000,
-      text_size: 21,
+      color: styleColors.white_smoke,
+      text_size: 40,
       font: 'fonts/Digiface (Rus by MarkStarikov2014) Regular.ttf',
       align_h: align.CENTER_H,
       align_v: align.CENTER_V,
-      text: getText(WEEK_DAYS[now.getDay()])
+      text: getText(WEEK_DAYS_SHORT[now.getDay()])
     })
 
     const self = this
@@ -241,7 +239,7 @@ Page({
       center_x: 240,
       center_y: 240,
       radius_x: 225,
-      radius_y: 225,
+      radius_y: 235,
       start_angle: event.startAngle-90,
       end_angle: event.endAngle-90,
       color: event.color

@@ -135,3 +135,41 @@ msgstr "Каждый месяц"
 msgid "There are no events"
 msgstr "Нет событий"
 
+msgid "mon"
+msgstr "пн"
+
+msgid "tue"
+msgstr "вт"
+
+msgid "wed"
+msgstr "ср"
+
+msgid "thu"
+msgstr "чт"
+
+msgid "fri"
+msgstr "пт"
+
+msgid "sat"
+msgstr "сб"
+
+msgid "sun"
+msgstr "вс"
+
+msgid "Description"
+msgstr "Описание"
+
+msgid "Start date"
+msgstr "Начало события"
+
+msgid "End date"
+msgstr "Окончание события"
+
+msgid "Color"
+msgstr "Цвет"
+
+msgid "Repeat"
+msgstr "Повтор"
+
+msgid "Delete this event"
+msgstr "Удалить это событие"

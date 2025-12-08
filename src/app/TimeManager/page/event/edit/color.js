@@ -26,6 +26,7 @@ Page({
 
     onInit(params){
         logger.log('Init edit color page with params: ' + params)
+        this.registerGes()
         const title = createWidget(widget.TEXT, {
             x: 140,
             y: 50,

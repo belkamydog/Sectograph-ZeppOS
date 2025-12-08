@@ -26,7 +26,7 @@ Page({
 
     onInit(params) {
         logger.log('Init edit start of event with params: ' + params)
-
+        this.registerGes()
         let needToEdit = JSON.parse(params)
         const start = new Date(needToEdit.start)
         let currentValues = {
@@ -65,7 +65,7 @@ Page({
             } if (event_type == 2) {
                 let startDate = new Date()
                 startDate.setFullYear(currentValues.year)
-                startDate.setMonth(currentValues.month-1)
+                startDate.setMonth(currentValues.month)
                 startDate.setDate(currentValues.day)
                 startDate.setHours(currentValues.hour)
                 startDate.setMinutes(currentValues.minute)

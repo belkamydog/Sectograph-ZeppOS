@@ -9,20 +9,18 @@ import { styleColors } from '../../../utils/Constants'
 const logger = log.getLogger('page/event/edit/menu.js')
 
 Page({
-
     registerGes(){
         onGesture({
             callback: (event) => {
             if (event === GESTURE_RIGHT) {
                 push({
-                    url: 'page/event',
+                    url: 'page/index',
                 })
             }
             return true
             },
         })
     },
-
     initBg(){
         this.circle = createWidget(widget.CIRCLE, {
         center_x: 240,
@@ -69,10 +67,9 @@ Page({
         })
         dialog.show(true) 
     },
-
     onInit(params){
         logger.log('Init edit event menu page with params: ' + params)
-
+        this.registerGes()
         this.initBg()
         this.initTitle()
         const menu = [

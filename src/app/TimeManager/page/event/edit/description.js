@@ -25,6 +25,7 @@ Page ({
 
     onInit(params){
         logger.log('Init edit description page with params: ' + params)
+        this.registerGes()
         let needToEditEvent = JSON.parse(params)
         const keyboard = createKeyboard({
             inputType: inputType.JSKB,
