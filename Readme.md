@@ -1,3 +1,106 @@
+### Event Manager — Your Schedule at a Glance
+
+<img src="./img/preview.png" alt="Preview" width="200"/>
+
+**Event Manager** is a comprehensive scheduling application designed specifically for Amazfit smartwatches, transforming your watch face into an interactive daily planner.
+
+### 📋 Key Features
+
+#### 1. **Event Creation and Management**
+- **Event Creation**: Add meetings, appointments, and descriptions
+- **Visualization**: View events and daily workload directly on the watch face
+- **Time Settings**: Set precise start and end times with date selection
+- **Status Tracking**: List of events: active, pending, or completed
+- **Flexible Settings**: Swipe-to-delete function, easy navigation, auto-delete and repeat event settings, and color selection
+
+#### 2. **Visual Time Scale**
+- **Arc Display**: Events shown as colored sectors
+- **Real-time Updates**: Monitor event progress throughout the day
+- **Color Coding**: Different colors for various event types
+- **Interactive Elements**: Tap on a sector to view event details
+
+#### 3. **Intuitive Interface**
+- **Gesture Controls**:
+- Swipe left to open the main menu
+- **Dual Time Display**: Analog and digital time
+- **Multilingual Support**: Russian and English language support
+- **Adaptive Design**: Optimized for small screens
+
+#### 4. **Smart Organization**
+- **Automatic Cleaning**: Past events are automatically processed, with customizable frequency
+- **Data Persistence**: Events saved between sessions
+- **Scrollable Lists**: Easy navigation through all events
+
+### 🎯 Ideal For
+- Executives managing meetings
+- Students tracking class schedules
+- Fitness enthusiasts planning workouts
+- Anyone needing daily reminder management
+
+## Controls and Navigation
+- **Swipe left to open the main menu**
+
+<img src="./img/swipeLeft.png" alt="Swipe Left" width="200"/>
+<img src="./img/menu.png" alt="Menu" width="200"/>
+
+- **Event list with navigation and detailed description**
+
+<img src="./img/list.png" alt="List" width="200"/>
+
+- **Tapping a sector opens the event page**
+
+<img src="./img/sectorTap.png" alt="Sector Tap" width="200"/>
+
+- **Edit or delete events**
+
+<img src="./img/event.png" alt="Event" width="200"/>
+
+---
+
+## 🚀 Technical Features
+
+### **Platform**
+- Developed for Zepp OS 2.0+
+- Compatible with Amazfit T-Rex-3, Balance2
+- Optimized for round screens
+
+### **Performance**
+- Minimal memory usage
+- Fast loading and response times
+
+### **Security**
+- All data stored locally on the watch
+- No internet access required
+- Privacy guaranteed
+
+---
+
+## 📞 Support
+
+The application is under active development. Your feedback and suggestions are highly appreciated!
+
+**Contacts:**
+- Email: belkamydog22@gmail.com
+
+## Support the Project:
+<img src="./img/donat.jpg" alt="Donate" width="200"/>
+
+## Download to Your Device
+<img src="./img/download.png" alt="Download" width="200"/>
+
+---
+
+## 📄 License
+
+© 2024 Event Manager. All rights reserved.
+This application is provided free of charge for personal use.
+
+---
+
+*Last updated: December 2024*
+
+
+
 
 ### Event Manager - Ваше расписание на запястье
 
