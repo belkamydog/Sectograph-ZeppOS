@@ -1,18 +1,20 @@
-import { getText } from '@zos/i18n'
-import {log} from '@zos/utils'
+import { createWidget, widget, prop, align, event } from '@zos/ui'
+import { onGesture, GESTURE_LEFT, GESTURE_RIGHT} from '@zos/interaction'
 import { push, launchApp } from '@zos/router'
+import { exit } from '@zos/app-service'
+import { getText } from '@zos/i18n'
 import { Time } from '@zos/sensor'
+import {log} from '@zos/utils'
 import { DayEvents, wfNumbers} from '../utils/Globals';
-import { onGesture, GESTURE_LEFT } from '@zos/interaction'
 import { HOUR_MS, WEEK_DAYS_SHORT } from '../utils/Constants';
 import { EventsManager } from '../utils/EventsManager';
 import { Event } from '../utils/Event';
 import { styleColors } from '../utils/Constants'
-import { createWidget, widget, prop, align, event } from '@zos/ui'
 
 const logger = log.getLogger('Main page')
 
 Page({
+
   widgets:{
     canvas: null,
     background: null,
@@ -44,6 +46,9 @@ Page({
             push({
               url: 'page/menu',
             })
+          }
+          else if (event === GESTURE_RIGHT) {
+            exit()
           }
           return true
         },
@@ -90,8 +95,8 @@ Page({
       this.widgets.wfNumbers[`_${i}`] = createWidget(widget.TEXT, {
         x: Math.round(x),
         y: Math.round(y),
-        w: 50,
-        h: 50,
+        w: 52,
+        h: 52,
         color: 0xFFFFFF,
         font: 'fonts/Digiface (Rus by MarkStarikov2014) Regular.ttf',
         text_size: size,

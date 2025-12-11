@@ -67,7 +67,7 @@ export class FileService {
         }
     }
 
-    #isFileAvail(path){
+    static #isFileAvail(path){
         return statSync({
             path: path,
         }) ? true : false
