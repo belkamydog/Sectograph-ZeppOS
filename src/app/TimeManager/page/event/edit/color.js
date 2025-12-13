@@ -3,7 +3,7 @@ import { createWidget, widget, prop } from '@zos/ui'
 import { getText } from '@zos/i18n'
 import { push } from '@zos/router'
 import {log} from '@zos/utils'
-import { DayEvents } from '../../../utils/Globals';
+import { eventServise } from '../../../utils/Globals';
 import { COLORS } from '../../../utils/Constants'
 
 const logger = log.getLogger('page/event/edit/color.js')
@@ -57,7 +57,7 @@ Page({
                     click_func: (color_i) => {
                         let current_event = JSON.parse(params)
                         current_event.color = currentColor
-                        DayEvents.editEvent(current_event)
+                        eventServise.editEvent(current_event)
                         logger.log('Edit color done: ' + current_event.color)
                         push({
                             url: 'page/event/edit/menu',

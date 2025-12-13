@@ -1,14 +1,15 @@
 import { createWidget, widget, prop, align } from '@zos/ui'
 import { getText } from '@zos/i18n'
 import { styleColors } from '../../../utils/Constants';
-import { DayEvents } from '../../../utils/Globals';
+import { eventServise } from '../../../utils/Globals';
+import { REPEAT } from '../../../utils/Constants';
 import { push } from '@zos/router'
 import {log} from '@zos/utils'
 
 
 const logger = log.getLogger('colors.js')
-
 let repeat_page_index = 0
+
 
 Page({
     repeat: ['Never','Every day', 'Every week', 'Every month'],
@@ -125,9 +126,10 @@ Page({
             text_size: 32,
             click_func: () => {
                 let result = JSON.parse(params)
-                result.repeat = repeat_page_index
+                result.repeat = REPEAT[repeat_page_index]
+                result.check_repeat = REPEAT[repeat_page_index]
                 logger.log('Repeat add to event: ' + result.repeat)
-                DayEvents.addEvent(result)
+                eventServise.createNewEvent(result)
                 push({
                     url: 'page/index',
                     params: 'clear'

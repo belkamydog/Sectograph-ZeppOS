@@ -1,5 +1,5 @@
 import { getText } from '@zos/i18n'
-import { styleColors, WEEK_DAYS } from './Constants'
+import { styleColors, WEEK_DAYS } from '../Constants'
 
 export class Event {
     id

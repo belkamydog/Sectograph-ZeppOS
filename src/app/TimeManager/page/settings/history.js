@@ -1,12 +1,13 @@
 import { createWidget, widget, align, prop } from '@zos/ui'
 import { back } from '@zos/router'
 import { getText } from '@zos/i18n'
-import { styleColors } from '../../utils/Constants'
+import { AUTO_DELETE, styleColors } from '../../utils/Constants'
 import { createModal, MODAL_CONFIRM } from '@zos/interaction'
-import { DayEvents } from '../../utils/Globals'
+import { settingsService } from '../../utils/Globals'
+import { SettingsService } from '../../utils/services/SettingsService'
 
 
-let index_auto_delete = DayEvents.getAutoDelete()
+let index_auto_delete = 0//  AUTO_DELETE.indexOf(SettingsService.loadSettings().autoDelete)
 Page({
     actions: ['Never','Older than day', 'Older than week', 'Older than month'],
 
@@ -19,7 +20,9 @@ Page({
             onClick: (keyObj) => {
                 const { type } = keyObj
                 if (type === MODAL_CONFIRM) {
-                    DayEvents.setAutoDelete(index_auto_delete)
+                    let settings = SettingsService.loadSettings()
+                    settings.autoDelete = AUTO_DELETE[index_auto_delete]
+                    SettingsService.saveSettings(settings)
                     dialog.show(false)
                     back()
                 } else {
@@ -116,17 +119,18 @@ Page({
             color: styleColors.white_smoke
         })
 
-        if (DayEvents.getAutoDelete() == 0)
+        if (AUTO_DELETE.indexOf(SettingsService.loadSettings().autoDelete) == 0)
             radioGroup.setProperty(prop.INIT, neverDelete)
-        else if (DayEvents.getAutoDelete() == 1) 
+        else if (AUTO_DELETE.indexOf(SettingsService.loadSettings().autoDelete) == 1) 
             radioGroup.setProperty(prop.INIT, dayDelete)                
-        else if (DayEvents.getAutoDelete() == 2) 
+        else if (AUTO_DELETE.indexOf(SettingsService.loadSettings().autoDelete) == 2) 
             radioGroup.setProperty(prop.INIT, weekDelete)
-        else if (DayEvents.getAutoDelete() == 3) 
+        else if (AUTO_DELETE.indexOf(SettingsService.loadSettings().autoDelete) == 3) 
             radioGroup.setProperty(prop.INIT, monthDelete)
     },
     
     onInit(){
+        console.log('INDEX AD' + SettingsService.loadSettings().autoDelete)
         createWidget(widget.TEXT, {
             text: getText('Delete events:'),
             w: 300,
@@ -154,7 +158,9 @@ Page({
                 if (index_auto_delete > 0){
                     self.attentionDialog()
                 }else {
-                    DayEvents.setAutoDelete(index_auto_delete)
+                    const settings = settingsService.loadSettings()
+                    settings.autoDelete = AUTO_DELETE[index_auto_delete]
+                    SettingsService.saveSettings(settings)
                     back()
                 }
             }

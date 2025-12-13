@@ -31,6 +31,19 @@ msgstr "Новое событие"
 msgid "Back"
 msgstr "Назад"
 
+
+msgid "never"
+msgstr "никогда"
+
+msgid "day"
+msgstr "день"
+
+msgid "week"
+msgstr "неделя"
+
+msgid "month"
+msgstr "месяц"
+
 msgid "Support the project"
 msgstr "Поддержать проект"
 
@@ -80,6 +93,10 @@ msgstr "Каждую неделю"
 
 msgid "Every month"
 msgstr "Каждый месяц"
+
+
+msgid "Not repeat"
+msgstr "Без повтора"
 
 msgid "day"
 msgstr "дн"

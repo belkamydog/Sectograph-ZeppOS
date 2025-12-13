@@ -2,7 +2,8 @@ import { createWidget, widget, prop, align } from '@zos/ui'
 import { onGesture, GESTURE_RIGHT } from '@zos/interaction'
 import { getText } from '@zos/i18n'
 import { styleColors } from '../../../utils/Constants';
-import { DayEvents } from '../../../utils/Globals';
+import { eventServise } from '../../../utils/Globals';
+import { REPEAT } from '../../../utils/Constants';
 import { push } from '@zos/router'
 import {log} from '@zos/utils'
 
@@ -138,9 +139,9 @@ Page({
             text_size: 32,
             click_func: () => {
                 let result = JSON.parse(params)
-                result.repeat = repeat_page_index
+                result.repeat = REPEAT[repeat_page_index]
                 logger.log('Edit repeate done new repeat: ' + result.repeat)
-                DayEvents.editEvent(result)
+                eventServise.editEvent(result)
                 push({
                     url: 'page/event',
                     params: JSON.stringify(result)

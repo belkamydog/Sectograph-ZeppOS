@@ -3,7 +3,7 @@ import { createModal, MODAL_CONFIRM } from '@zos/interaction'
 import { push } from '@zos/router'
 import { getText } from '@zos/i18n'
 import { styleColors } from '../../utils/Constants'
-import { DayEvents } from '../../utils/Globals'
+import { eventServise } from '../../utils/Globals'
 
 Page({
 
@@ -31,9 +31,9 @@ Page({
                 const { type } = keyObj
                 if (type === MODAL_CONFIRM) {
                     push({
-                        url: 'page/settings/menu',
+                        url: 'page/index',
                     })
-                    DayEvents.clearAllHistory()
+                    eventServise.clearHistoryOfEvents()
                     dialog.show(false)
                 } else {
                     dialog.show(false)

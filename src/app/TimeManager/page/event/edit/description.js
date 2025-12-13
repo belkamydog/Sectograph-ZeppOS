@@ -3,7 +3,7 @@ import { createKeyboard, inputType } from '@zos/ui'
 import { push, back } from '@zos/router'
 import {log} from '@zos/utils'
 
-import { DayEvents } from '../../../utils/Globals'
+import { eventServise } from '../../../utils/Globals'
 
 const logger = log.getLogger('page/event/edit/description.js')
 
@@ -32,7 +32,7 @@ Page ({
             onComplete: (keyboardWidget, result) => {
                 needToEditEvent.description = result.data
                 logger.log('Edit description done: ' + needToEditEvent.description)
-                DayEvents.editEvent(needToEditEvent)
+                eventServise.editEvent(needToEditEvent)
                 push({
                     url: 'page/event',
                     params: JSON.stringify(needToEditEvent)

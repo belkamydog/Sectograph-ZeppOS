@@ -3,7 +3,7 @@ import { widget, createWidget } from '@zos/ui'
 import { getText } from '@zos/i18n'
 import {log} from '@zos/utils'
 import { onGesture, GESTURE_RIGHT } from '@zos/interaction'
-import { DayEvents } from '../../../utils/Globals'
+import { eventServise } from '../../../utils/Globals'
 import { DATE_TIME_PEACKER } from '../../../utils/Constants'
 
 
@@ -66,12 +66,12 @@ Page({
             } if (event_type == 2) {
                 let endDate = new Date()
                 endDate.setFullYear(currentValues.year)
-                endDate.setMonth(currentValues.month-1)
+                endDate.setMonth(currentValues.month)
                 endDate.setDate(currentValues.day)
                 endDate.setHours(currentValues.hour)
                 endDate.setMinutes(currentValues.minute)
                 needToEdit.end = endDate
-                DayEvents.editEvent(needToEdit)
+                eventServise.editEvent(needToEdit)
                 logger.log('Edit end date done, new end: ' +  needToEdit.end)
                 push({
                     url: 'page/event',

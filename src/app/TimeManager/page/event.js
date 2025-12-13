@@ -2,8 +2,8 @@ import { createModal, MODAL_CONFIRM } from '@zos/interaction'
 import { onGesture, GESTURE_RIGHT } from '@zos/interaction'
 import { createWidget, widget, align, show_level } from '@zos/ui'
 import { back, push } from '@zos/router'
-import { Event } from '../utils/Event'
-import { DayEvents } from '../utils/Globals'
+import { Event } from '../utils/models/Event'
+import { eventServise } from '../utils/Globals'
 import { styleColors } from '../utils/Constants'
 import { getText } from '@zos/i18n'
 
@@ -44,7 +44,7 @@ Page ({
             onClick: (keyObj) => {
                 const { type } = keyObj
                 if (type === MODAL_CONFIRM) {
-                    DayEvents.deleteEventById(pageData.id)
+                    eventServise.deleteEvent(pageData.id)
                     back()
                 } else {
                     this.widgets.deleteDialog.show(false)

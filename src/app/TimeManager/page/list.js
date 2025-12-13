@@ -1,13 +1,13 @@
 import { createWidget, widget, prop, align } from '@zos/ui'
 import { createModal, MODAL_CONFIRM } from '@zos/interaction'
-import { DayEvents } from '../utils/Globals';
+import { eventServise } from '../utils/Globals';
 import { push } from '@zos/router'
 import { getText } from '@zos/i18n'
 import { HOUR_MS, styleColors } from '../utils/Constants';
 import {log} from '@zos/utils'
-import { EventsManager } from '../utils/EventsManager';
-import { Event } from '../utils/Event';
+import { Event } from '../utils/models/Event';
 import { onGesture, GESTURE_RIGHT } from '@zos/interaction'
+import { EventService } from '../utils/services/EventService';
 
 
 const logger = log.getLogger('page/list.js')
@@ -55,7 +55,7 @@ Page({
       align_v: align.CENTER_V,
       color: styleColors.white
     })
-    const period = EventsManager.getWeekRange(date)
+    const period = EventService.getWeekRange(date)
     createWidget(widget.TEXT, {
         text: Event.addZero(period.start.getDate()) + '.'+ Event.addZero((period.start.getMonth()+1)) + ' - ' + Event.addZero(period.end.getDate()-1) + '.'+ Event.addZero((period.end.getMonth()+1)),
         x: 0,
@@ -72,7 +72,6 @@ Page({
   addKeys(arrEv){
     let result = []
     let previous = {}
-    const repeat = ['Once', 'Every day', 'Every week', 'Every month']
     previous.previous_week = 'previous.png'
     result.push(previous)
     for (let i of arrEv){
@@ -81,7 +80,10 @@ Page({
       i.weekDay = new Event(i).getWeekDay()
       i.del_img = 'delete.png'
       i.edit_img = 'edit.png'
-      i.check_repeat = '🔄 ' + getText(repeat[i.check_repeat])
+      if (i.check_repeat == 'never') i.check_repeat =''
+      else if (i.check_repeat == 'day') i.check_repeat ='🔄 '+ getText('Every day')
+      else if (i.check_repeat == 'week') i.check_repeat ='🔄 '+ getText('Every week')
+      else if (i.check_repeat == 'month') i.check_repeat ='🔄 '+ getText('Every month')
       result.push(i)
     } 
     let next = {}
@@ -115,8 +117,9 @@ Page({
     }
     this.initBg()
     this.initTitle(period);
-    const listOfEvents = DayEvents.getListOfEventsInCurrentWeek(period)
-    const separatedByColorInd = DayEvents.separateListToPastCurrentFutureEvents(listOfEvents)
+    const listOfEvents = eventServise.getWeekListOfEvents(period)
+
+    const separatedByColorInd = EventService.separateListToPastCurrentFutureEvents(listOfEvents)
     const weekEvents = this.addKeys(listOfEvents)
     logger.log('Init list of events: ' + JSON.stringify(weekEvents))
     if (weekEvents.length == 2) 
@@ -224,7 +227,7 @@ Page({
                   onClick: (keyObj) => {
                       const { type } = keyObj
                       if (type === MODAL_CONFIRM) {
-                        DayEvents.deleteEventById(weekEvents[index].id)
+                        eventServise.deleteEvent(weekEvents[index].id)
                         scrollList.setProperty(prop.DELETE_ITEM, { index })
                         logger.log('Delete event: ' + JSON.stringify(weekEvents[index]))
                         deleteDialog.show(false)

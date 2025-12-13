@@ -5,11 +5,11 @@ import { exit } from '@zos/app-service'
 import { getText } from '@zos/i18n'
 import { Time } from '@zos/sensor'
 import {log} from '@zos/utils'
-import { DayEvents, wfNumbers} from '../utils/Globals';
+import { eventServise, wfNumbers} from '../utils/Globals';
 import { HOUR_MS, WEEK_DAYS_SHORT } from '../utils/Constants';
-import { EventsManager } from '../utils/EventsManager';
-import { Event } from '../utils/Event';
+import { Event } from '../utils/models/Event';
 import { styleColors } from '../utils/Constants'
+import { EventService } from '../utils/services/EventService'
 
 const logger = log.getLogger('Main page')
 
@@ -117,7 +117,7 @@ Page({
       center_y: 240,
       pos_x: 240,
       pos_y: 0,
-      angle: EventsManager.convertTimeToAngle(new Date() - HOUR_MS*2),
+      angle: EventService.convertTimeToAngle(new Date() - HOUR_MS*2),
       src: 'arrows/deadLine.png'
     })
     this.widgets.hourArrow = createWidget(widget.TIME_POINTER, {
@@ -214,8 +214,8 @@ Page({
       alpha: 100 
     })
     this.widgets.canvas.addEventListener(event.CLICK_UP, function cb(info) {
-      for (const event of DayEvents.getListOfCurrentDayEvents()){
-        if (EventsManager.isThisEvent(info.x, info.y, event)){
+      for (const event of eventServise.getActualEvents()){
+        if (EventService.isThisEvent(info.x, info.y, event)){
           push({
             url: 'page/event',
             params: JSON.stringify(event),
@@ -240,7 +240,7 @@ Page({
     logger.log('updating main page ...')
     const now = new Date()
     this.updateWfNumbers()
-    this.widgets.destroyArrow.setProperty(prop.ANGLE, EventsManager.convertTimeToAngle(now - HOUR_MS * 2))
+    this.widgets.destroyArrow.setProperty(prop.ANGLE, EventService.convertTimeToAngle(now - HOUR_MS * 2))
     this.widgets.digitTime.setProperty(prop.TEXT, 
                               Event.addZero(now.getHours().toString()) + 
                               ':' +
@@ -251,7 +251,7 @@ Page({
         w: 480,
         h: 480
       })
-      this.renderEvents(DayEvents.getListOfCurrentDayEvents())
+      this.renderEvents(eventServise.getActualEvents())
       logger.log('main page updated')
   },
 
@@ -260,7 +260,7 @@ Page({
     this.widgets.canvas.drawArc({
       center_x: 240,
       center_y: 240,
-      radius_x: 225,
+      radius_x: 235,
       radius_y: 235,
       start_angle: event.startAngle-90,
       end_angle: event.endAngle-90,
@@ -280,7 +280,7 @@ Page({
     this.initWfNumbers()
     this.initArrows()
     this.initCanvas()
-    this.renderEvents(DayEvents.getListOfCurrentDayEvents())
+    this.renderEvents(eventServise.getActualEvents())
     this.iniitCentralBackground()
     this.initDigitalTime()
   }

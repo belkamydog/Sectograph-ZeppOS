@@ -1,4 +1,5 @@
 export const HOUR_MS = 3600000
+
 export const COLORS = [
   0xFF0000,
   0x00FF00,
@@ -177,7 +178,6 @@ export const WEEK_DAYS = [
   'Friday',
   'Saturday',
 ]
-
 export const WEEK_DAYS_SHORT = [
     "sun",    // Sunday
     "mon",   // Monday
@@ -187,8 +187,6 @@ export const WEEK_DAYS_SHORT = [
     "fri",   // Friday
     "sat",   // Saturday
 ];
-
-
 export const DATE_TIME_PEACKER = {
     font_size: 30,
     select_font_size: 30,
@@ -196,3 +194,5 @@ export const DATE_TIME_PEACKER = {
     unit_font_size: 5,
     col_width: 45,
 }
+export const REPEAT = ['never', 'day', 'week', 'month']
+export const AUTO_DELETE = ['never', 'day', 'week', 'month']

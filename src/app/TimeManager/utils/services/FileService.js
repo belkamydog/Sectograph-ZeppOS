@@ -21,7 +21,7 @@ export class FileService {
     static readFile(path){
         let result = null
         logger.log('Reading file ' + path + '...')
-        if (this.#isFileAvail(path)){
+        if (this.isFileAvail(path)){
             result = readFileSync({
                 path: path,
                 options: {
@@ -51,11 +51,11 @@ export class FileService {
      * }
      */
     static writeFile(path, content){
-        logger.log('Write file to' + path + '...')
+        logger.log('Write file to ' + path + '...')
         try{
             writeFileSync({
                 path: path,
-                data: content,
+                data: JSON.stringify(content),
                 options: {
                     encoding: 'utf8',
                 },
@@ -67,7 +67,7 @@ export class FileService {
         }
     }
 
-    static #isFileAvail(path){
+    static isFileAvail(path){
         return statSync({
             path: path,
         }) ? true : false

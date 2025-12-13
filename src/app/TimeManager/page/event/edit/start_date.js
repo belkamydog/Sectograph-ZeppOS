@@ -3,7 +3,7 @@ import { widget, createWidget } from '@zos/ui'
 import { getText } from '@zos/i18n'
 import {log} from '@zos/utils'
 import { onGesture, GESTURE_RIGHT } from '@zos/interaction'
-import { DayEvents } from '../../../utils/Globals'
+import {eventServise } from '../../../utils/Globals'
 import { DATE_TIME_PEACKER } from '../../../utils/Constants'
 
 const logger = log.getLogger('page/event/edit/start_date.js')
@@ -70,7 +70,7 @@ Page({
                 startDate.setHours(currentValues.hour)
                 startDate.setMinutes(currentValues.minute)
                 needToEdit.start = startDate
-                DayEvents.editEvent(needToEdit)
+                eventServise.editEvent(needToEdit)
                 logger.log('Edit start date done, new start: ' +  needToEdit.start)
                 push({
                     url: 'page/event',
