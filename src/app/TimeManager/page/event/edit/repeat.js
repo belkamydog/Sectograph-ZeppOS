@@ -124,8 +124,11 @@ Page({
             text_size: 32,
             color: styleColors.white_smoke
         })
-
-        radioGroup.setProperty(prop.INIT, neverRepeatBtn)
+        const repeatIndex = REPEAT.indexOf(JSON.parse(params).check_repeat)
+        if (repeatIndex == 1) radioGroup.setProperty(prop.INIT, everyDayRepeatBtn)
+        else if (repeatIndex == 2) radioGroup.setProperty(prop.INIT, everyWeekRepeatBtn)
+        else if (repeatIndex == 3) radioGroup.setProperty(prop.INIT, everyMonthRepeatBtn)
+        else radioGroup.setProperty(prop.INIT, neverRepeatBtn)
 
         createWidget(widget.BUTTON, {
             x: 40,

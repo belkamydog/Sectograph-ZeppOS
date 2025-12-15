@@ -2,7 +2,7 @@ import {log} from '@zos/utils'
 import { FileService } from './FileService'
 import { SettingsService } from './SettingsService'
 import { Event } from '../models/Event'
-import { HOUR_MS } from '../Constants'
+import { HOUR_MS, REPEAT } from '../Constants'
 
 const logger = log.getLogger('EventService')
 
@@ -11,7 +11,6 @@ export class EventService {
     actualEvents = []
 
     constructor(){}
-
 
     getActualEvents(){
         this.#autoDeleteEvents()
@@ -172,7 +171,7 @@ export class EventService {
         const loadedEvents = this.#loadEvents()
         let resultList = []
         for (const ev of loadedEvents){
-            ev.checkRepeat = ev.repeat
+            ev.check_repeat = ev.repeat
             if (ev.repeat != 'never') {
                 this.#repeateRule(new Event(ev), week, resultList)
             }
@@ -182,6 +181,7 @@ export class EventService {
             }
         }
         resultList.sort((a, b) => new Date(a.start) - new Date(b.start));
+        for (const i of resultList) console.log('resultList ' + JSON.stringify(i))
         return resultList
     }
 
@@ -204,6 +204,7 @@ export class EventService {
      */
     #autoDeleteEvents() {
         try {
+            let countOfdeleted = 0
             logger.log('Starting auto-delete process...');
             const autoDelete = SettingsService.loadSettings().autoDelete;
             const loadedEvents = this.#loadEvents();
@@ -212,9 +213,10 @@ export class EventService {
                 if (this.#checkEventFields(ev) && !this.#deleteFilter(ev, autoDelete)) {
                     deleteFilterDone.push(ev);
                 }
+                else countOfdeleted++
             }
             this.#saveEvents(deleteFilterDone);
-            logger.log('Auto-delete process completed');
+            logger.log(`Auto-delete process completed. ${countOfdeleted} events deleted`);
         } catch (error) {
             logger.error(error, 'Auto-delete events failed');
             throw error;
@@ -246,19 +248,26 @@ export class EventService {
             const start = new Date().getTime() - 2 * HOUR_MS
             const end = new Date().getTime() + 10 * HOUR_MS
             for (const ev of loadedEvents) {
-                this.#repeateRule(ev, {start: new Date(start), end: new Date(end)}, this.actualEvents)
-                if (this.#checkEventFields(ev) && this.#actualEventsFilter(ev)) {
-                    this.#addAnglesToEvent(ev);
+                this.#addAnglesToEvent(ev);
+                if (this.#checkEventFields(ev) && this.#actualEventsFilter(ev) && ev.repeat == 'never') {
                     this.actualEvents.push(ev);
                 }
+                else{
+                    let repeatedEventsList = []
+                    this.#repeateRule(ev, {start: new Date(start), end: new Date(end)}, repeatedEventsList)
+                    repeatedEventsList.forEach((item) => {
+                        if (this.#checkEventFields(item) && this.#actualEventsFilter(item))
+                            this.#addAnglesToEvent(item)
+                            this.actualEvents.push(item)
+                    })
+                }
             }
-            logger.log('Actual events loaded successfully');
+            logger.log(`Actual events loaded successfully. Count of uploaded = ${this.actualEvents.length}`);
         } catch (error) {
             logger.error(error, 'Failed to load actual events');
             throw error;
         }
     }
-
 
     /**
      * Фильтрует события по их актуальности
@@ -415,17 +424,22 @@ export class EventService {
         let repeatMs = this.#getRepeatTimeMs(event);
         if (event.repeat !== 'never') {
             let repeatedEvent = { ...event };
-            repeatedEvent.checkRepeat = event.repeat;
+            repeatedEvent.check_repeat = event.repeat;
             repeatedEvent.repeat = 'never';
-            repeatedEvent.start = new Date(event.start) + repeatMs;
-            repeatedEvent.end = new Date(event.end) + repeatMs;
-            while (repeatedEvent.start <= new Date(period.end)) {
-                listToAdd.push(new Event(repeatedEvent));
+            let start = new Date(event.start).getTime() + repeatMs
+            let end = new Date(event.end).getTime() + repeatMs
+            while (new Date(repeatedEvent.start).getTime() <= new Date(period.end).getTime()) {
+                if (new Date(repeatedEvent.start).getTime() <= new Date(period.end).getTime() &&
+                    new Date(repeatedEvent.end).getTime() >= new Date(period.start).getTime()){
+                    listToAdd.push(new Event(repeatedEvent));
+                }
+                repeatedEvent.start = start;
+                repeatedEvent.end = end;
                 repeatMs = event.repeat === 'month' 
                     ? this.#getMsToSameDateInNextMonth(repeatedEvent) 
                     : repeatMs;
-                repeatedEvent.start = new Date(repeatedEvent.start) + repeatMs;
-                repeatedEvent.end = new Date(repeatedEvent.end) + repeatMs;
+                start += repeatMs
+                end += repeatMs
             }
         }
     }
@@ -606,7 +620,7 @@ export class EventService {
             startAngle = EventService.convertTimeToAngle(deleteTime);
         } else if (new Date(event.end).getTime() > timeNow + 10 * HOUR_MS) {
             // Если конец события позже чем через 10 часов, обрезаем до 10-часовой отметки
-            endAngle = EventsManager.convertTimeToAngle(timeNow + 10 * HOUR_MS);
+            endAngle = EventService.convertTimeToAngle(timeNow + 10 * HOUR_MS);
         }
         
         // Корректируем угол начала, если он больше угла конца
@@ -620,9 +634,9 @@ export class EventService {
 
     #getRepeatTimeMs(event){
         let repeatTimeMs = 0
-        if (event.repeat == 'day') repeatTimeMs = 24 * HOUR_MS
-        else if ( event.repeat == 'week') repeatTimeMs = 7 * 24 * HOUR_MS
-        else if (event.repeat == 'month') repeatTimeMs = this.#getMsToSameDateInNextMonth(event)
+        if (event.repeat == REPEAT[1]) repeatTimeMs = 24 * HOUR_MS
+        else if ( event.repeat == REPEAT[2]) repeatTimeMs = 7 * 24 * HOUR_MS
+        else if (event.repeat == REPEAT[3]) repeatTimeMs = this.#getMsToSameDateInNextMonth(event)
         return repeatTimeMs
     }
 
